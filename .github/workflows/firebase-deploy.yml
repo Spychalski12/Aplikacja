@@ -1,0 +1,27 @@
+name: Firebase Deployment
+
+on:
+  push:
+    branches:
+      - main  # Workflow będzie uruchamiany na push do gałęzi "main"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Workflow zostanie uruchomiony na najnowszej wersji Ubuntu
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Pobieramy kod z repozytorium
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3  # Ustawiamy Node.js
+        with:
+          node-version: '18'  # Wersja Node.js (dopasowana do wymagań Firebase)
+
+      - name: Install dependencies
+        run: npm install  # Instalacja zależności projektu
+
+      - name: Firebase Deploy
+        uses: wzieba/firebase-action@v1  # Używamy akcji do deployowania na Firebase
+        with:
+          firebase_token: ${{ secrets.FIREBASE_AUTH_TOKEN }}  # Token do Firebase, zapisany w sekrecie GitHub
